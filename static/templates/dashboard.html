@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Task Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="dashboard.html">
+          <i class="fas fa-tasks me-2"></i>
+          Task Dashboard
+        </a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link active" href="dashboard.html">
+            <i class="fas fa-home me-1"></i>Dashboard
+          </a>
+          <a class="nav-link" href="reports.html">
+            <i class="fas fa-chart-bar me-1"></i>Reports
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+      <!-- Header Section -->
+      <div class="row mb-4">
+        <div class="col">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h1 class="display-6 fw-bold mb-0">Task Dashboard</h1>
+              <p class="text-muted mb-0">Manage your tasks efficiently</p>
+            </div>
+            <button class="btn btn-primary" onclick="showAddTaskModal()">
+              <i class="fas fa-plus me-2"></i>New Task
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="row justify-content-around g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+          <div class="card summary-card h-100">
+            <div class="card-body text-center">
+              <div class="summary-icon icon-total mb-3">
+                <i class="fas fa-tasks"></i>
+              </div>
+              <div class="summary-number" id="total-tasks">2</div>
+              <div class="summary-label">Total Tasks</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="card summary-card h-100">
+            <div class="card-body text-center">
+              <div class="summary-icon icon-completed mb-3">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="summary-number text-success" id="completed-tasks">
+                1
+              </div>
+              <div class="summary-label">Completed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="card summary-card h-100">
+            <div class="card-body text-center">
+              <div class="summary-icon icon-pending mb-3">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="summary-number text-warning" id="pending-tasks">
+                0
+              </div>
+              <div class="summary-label">Pending</div>
+            </div>
+          </div>
+        </div>
+
+      <!-- Main Content Area -->
+      <div class="row g-4">
+        <!-- Task Management -->
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i class="fas fa-list-check me-2"></i>Recent Tasks
+              </h5>
+            </div>
+            <div class="card-body">
+              <!-- Task Filters -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <select class="form-select" id="status-filter">
+                    <option value="">All Statuses</option>
+                    <option value="pending">📋 Pending</option>
+                    <option value="in_progress">⚡ In Progress</option>
+                    <option value="completed">✅ Completed</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <select class="form-select" id="priority-filter">
+                    <option value="">All Priorities</option>
+                    <option value="high">🔴 High</option>
+                    <option value="medium">🟡 Medium</option>
+                    <option value="low">🟢 Low</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search tasks..."
+                    id="search-tasks"
+                  />
+                </div>
+              </div>
+
+              <!-- Task List -->
+              <div id="task-list">
+                
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather & Stats -->
+        <div class="col-lg-4">
+          <!-- Weather Card -->
+          <div class="card weather-card mb-4">
+            <div class="card-header border-0">
+              <h5 class="mb-0 text-white">
+                <i class="fas fa-cloud-sun me-2"></i>Weather Info
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter city..."
+                  id="weather-city"
+                />
+                <button class="btn btn-light" onclick="getWeather()">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <div id="weather-info" class="weather-info-display text-center">
+                <div class="mb-3">
+                  <h5>New York</h5>
+                  <div class="temperature-display mb-2">22°C</div>
+                  <p class="mb-3">Partly Cloudy</p>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <small>Humidity</small><br />
+                    <strong>65%</strong>
+                  </div>
+                  <div class="col-6">
+                    <small>Wind</small><br />
+                    <strong>12 m/s</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="taskModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-plus-circle me-2"></i>Add New Task
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="task-form">
+              <div class="row g-3">
+                <div class="col-md-8">
+                  <label class="form-label">Task Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="task-title"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Priority</label>
+                  <select class="form-select" id="task-priority">
+                    <option value="low">🟢 Low</option>
+                    <option value="medium">🟡 Medium</option>
+                    <option value="high">🔴 High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  id="task-description"
+                  rows="3"
+                ></textarea>
+              </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveTask()">
+              <i class="fas fa-save me-1"></i>Save Task
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <!-- <script>
+      // Simple JavaScript functions
+      function showAddTaskModal() {
+        const modal = new bootstrap.Modal(document.getElementById("taskModal"));
+        modal.show();
+      }
+
+      function saveTask() {
+        const title = document.getElementById("task-title").value;
+        const priority = document.getElementById("task-priority").value;
+        const description = document.getElementById("task-description").value;
+        const location = document.getElementById("task-location").value;
+
+        if (title) {
+          // 1. Update counters
+          let total = document.getElementById("total-tasks");
+          let pending = document.getElementById("pending-tasks");
+
+          total.innerText = parseInt(total.innerText) + 1;
+          pending.innerText = parseInt(pending.innerText) + 1;
+
+          // 2. Create new task card
+          const taskList = document.getElementById("task-list");
+          const newTask = document.createElement("div");
+          newTask.classList.add(
+            "task-item",
+            "card",
+            "mb-3",
+            `priority-${priority}`
+          );
+          newTask.innerHTML = `
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title mb-1">${title}</h6>
+                        <p class="card-text text-muted small mb-2">${
+                          description || ""
+                        }</p>
+                        <div class="d-flex gap-2">
+                            <span class="badge ${
+                              priority === "high"
+                                ? "bg-danger"
+                                : priority === "medium"
+                                ? "bg-warning"
+                                : "bg-success"
+                            }">
+                                ${
+                                  priority === "high"
+                                    ? "🔴 High"
+                                    : priority === "medium"
+                                    ? "🟡 Medium"
+                                    : "🟢 Low"
+                                }
+                            </span>
+                            <span class="badge bg-warning">📋 Pending</span>
+                            ${
+                              location
+                                ? `<span class="badge bg-info"><i class="fas fa-map-marker-alt me-1"></i>${location}</span>`
+                                : ""
+                            }
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-check me-2"></i>Mark Complete</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cloud me-2"></i>Check Weather</a></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+          taskList.prepend(newTask); // add on top
+
+          // 3. Close modal & reset form
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("taskModal")
+          );
+          modal.hide();
+          document.getElementById("task-form").reset();
+        } else {
+          alert("Please enter a task title!");
+        }
+      }
+
+      function getWeather() {
+        const city = document.getElementById("weather-city").value;
+        if (city) {
+          // Simulate weather API call
+          document.getElementById("weather-info").innerHTML = `
+                        <div class="text-center">
+                            <h5>${city}</h5>
+                            <div class="temperature-display mb-2">${Math.floor(
+                              Math.random() * 30 + 5
+                            )}°C</div>
+                            <p class="mb-3">Sunny</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <small>Humidity</small><br>
+                                    <strong>${Math.floor(
+                                      Math.random() * 50 + 30
+                                    )}%</strong>
+                                </div>
+                                <div class="col-6">
+                                    <small>Wind</small><br>
+                                    <strong>${Math.floor(
+                                      Math.random() * 20 + 5
+                                    )} m/s</strong>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+        }
+      }
+    </script> -->
+    <script>
+  // ====== Update Counters ======
+  function updateCounters() {
+    const total = document.querySelectorAll("#task-list .task-item").length;
+    const completed = document.querySelectorAll("#task-list .status-completed").length;
+    const pending = total - completed;
+
+    document.getElementById("total-tasks").innerText = total;
+    document.getElementById("completed-tasks").innerText = completed;
+    document.getElementById("pending-tasks").innerText = pending;
+  }
+
+  // ====== Handle Actions (Mark Complete / Delete) ======
+  function attachTaskActions(task) {
+    // Mark Complete
+    task.querySelector(".mark-complete")?.addEventListener("click", function () {
+      task.classList.add("status-completed");
+      task.querySelector(".badge.bg-warning")?.remove(); // remove "Pending"
+      task.querySelector(".d-flex.gap-2").insertAdjacentHTML(
+        "beforeend",
+        '<span class="badge bg-success">✅ Completed</span>'
+      );
+      updateCounters();
+    });
+
+    // Delete Task
+    task.querySelector(".delete-task")?.addEventListener("click", function () {
+      task.remove();
+      updateCounters();
+    });
+  }
+
+  // ====== Add Task Modal ======
+  function showAddTaskModal() {
+    const modal = new bootstrap.Modal(document.getElementById("taskModal"));
+    modal.show();
+  }
+
+  // ====== Save Task ======
+  function saveTask() {
+    const title = document.getElementById("task-title").value;
+    const priority = document.getElementById("task-priority").value;
+    const description = document.getElementById("task-description").value;
+    const location = document.getElementById("task-location").value;
+
+    if (title) {
+      const taskList = document.getElementById("task-list");
+      const newTask = document.createElement("div");
+      newTask.classList.add("task-item", "card", "mb-3", `priority-${priority}`);
+      newTask.innerHTML = `
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <h6 class="card-title mb-1">${title}</h6>
+              <p class="card-text text-muted small mb-2">${description || ""}</p>
+              <div class="d-flex gap-2">
+                <span class="badge ${
+                  priority === "high"
+                    ? "bg-danger"
+                    : priority === "medium"
+                    ? "bg-warning"
+                    : "bg-success"
+                }">
+                  ${
+                    priority === "high"
+                      ? "🔴 High"
+                      : priority === "medium"
+                      ? "🟡 Medium"
+                      : "🟢 Low"
+                  }
+                </span>
+                <span class="badge bg-warning">📋 Pending</span>
+                ${
+                  location
+                    ? `<span class="badge bg-info"><i class="fas fa-map-marker-alt me-1"></i>${location}</span>`
+                    : ""
+                }
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                Actions
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item mark-complete" href="#"><i class="fas fa-check me-2"></i>Mark Complete</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-cloud me-2"></i>Check Weather</a></li>
+                <li><a class="dropdown-item text-danger delete-task" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+      taskList.prepend(newTask);
+
+      // attach events to new task
+      attachTaskActions(newTask);
+
+      // close modal & reset
+      bootstrap.Modal.getInstance(document.getElementById("taskModal")).hide();
+      document.getElementById("task-form").reset();
+
+      updateCounters();
+    } else {
+      alert("Please enter a task title!");
+    }
+  }
+
+  // ====== Weather (unchanged) ======
+  function getWeather() {
+    const city = document.getElementById("weather-city").value;
+    if (city) {
+      document.getElementById("weather-info").innerHTML = `
+        <div class="text-center">
+          <h5>${city}</h5>
+          <div class="temperature-display mb-2">${Math.floor(Math.random() * 30 + 5)}°C</div>
+          <p class="mb-3">Sunny</p>
+          <div class="row">
+            <div class="col-6"><small>Humidity</small><br><strong>${Math.floor(Math.random() * 50 + 30)}%</strong></div>
+            <div class="col-6"><small>Wind</small><br><strong>${Math.floor(Math.random() * 20 + 5)} m/s</strong></div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // ====== Init existing tasks ======
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("#task-list .task-item").forEach(attachTaskActions);
+    updateCounters();
+  });
+</script>
+
+    </body>
+
+</html>

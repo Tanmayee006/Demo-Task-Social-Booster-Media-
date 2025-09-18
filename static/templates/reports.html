@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Task Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-tasks me-2"></i>
+                Task Dashboard
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="dashboard.html">
+                    <i class="fas fa-home me-1"></i>Dashboard
+                </a>
+                <a class="nav-link active" href="reports.html">
+                    <i class="fas fa-chart-bar me-1"></i>Reports
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="display-6 fw-bold mb-0">Analytics & Reports</h1>
+                        <p class="text-muted mb-0">Comprehensive insights into your task performance</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary" onclick="refreshCharts()">
+                            <i class="fas fa-sync me-2"></i>Refresh Data
+                        </button>
+                        <button class="btn btn-primary" onclick="exportReport()">
+                            <i class="fas fa-download me-2"></i>Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="card summary-card analytics-card h-100">
+                    <div class="card-body text-center">
+                        <div class="summary-icon icon-total mb-3">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="summary-number">24</div>
+                        <div class="summary-label">Total Tasks</div>
+                        <small class="text-success">+15% from last week</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card summary-card analytics-card h-100">
+                    <div class="card-body text-center">
+                        <div class="summary-icon icon-completed mb-3">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="summary-number text-success">75%</div>
+                        <div class="summary-label">Completion Rate</div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-success" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card summary-card analytics-card h-100">
+                    <div class="card-body text-center">
+                        <div class="summary-icon icon-overdue mb-3">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="summary-number text-warning">3</div>
+                        <div class="summary-label">Overdue Tasks</div>
+                        <small class="text-warning">Needs attention</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card summary-card analytics-card h-100">
+                    <div class="card-body text-center">
+                        <div class="summary-icon icon-pending mb-3">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="summary-number text-info">4.2d</div>
+                        <div class="summary-label">Avg. Completion</div>
+                        <small class="text-muted">Days per task</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="row g-4 mb-4">
+            <!-- Completion Trend Chart -->
+            <div class="col-lg-8">
+                <div class="card analytics-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2 text-primary"></i>Task Completion Trend
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="completionChart"></canvas>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4 text-center">
+                                <div class="border-end">
+                                    <div class="fw-bold text-success" id="trend-completed">42</div>
+                                    <small class="text-muted">Completed</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="border-end">
+                                    <div class="fw-bold text-primary" id="trend-created">56</div>
+                                    <small class="text-muted">Created</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="fw-bold text-warning" id="trend-ratio">75%</div>
+                                <small class="text-muted">Success Rate</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Priority Distribution -->
+            <div class="col-lg-4">
+                <div class="card analytics-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-pie me-2 text-info"></i>Priority Breakdown
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="priorityChart"></canvas>
+                        </div>
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #dc3545;"></div>
+                                    <span class="small fw-semibold">High Priority</span>
+                                </div>
+                                <span class="badge bg-light text-dark">8</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #ffc107;"></div>
+                                    <span class="small fw-semibold">Medium Priority</span>
+                                </div>
+                                <span class="badge bg-light text-dark">12</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #28a745;"></div>
+                                    <span class="small fw-semibold">Low Priority</span>
+                                </div>
+                                <span class="badge bg-light text-dark">4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="row g-4 mb-4">
+            <!-- Status Distribution -->
+            <div class="col-lg-6">
+                <div class="card analytics-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-bar me-2 text-success"></i>Status Overview
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                        <div class="row mt-3 text-center">
+                            <div class="col-3">
+                                <div class="fw-bold text-secondary">6</div>
+                                <small class="text-muted">Pending</small>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-bold text-primary">5</div>
+                                <small class="text-muted">In Progress</small>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-bold text-success">12</div>
+                                <small class="text-muted">Completed</small>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-bold text-danger">1</div>
+                                <small class="text-muted">Cancelled</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location Analytics -->
+            <div class="col-lg-6">
+                <div class="card analytics-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marked-alt me-2 text-warning"></i>Top Locations
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="locationChart"></canvas>
+                        </div>
+                        <div class="mt-3">
+                            <h6 class="text-muted mb-3">📍 Location Summary</h6>
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle me-2" style="width: 8px; height: 8px; background-color: #FF6384;"></div>
+                                        <span class="fw-semibold">New York</span>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">8</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle me-2" style="width: 8px; height: 8px; background-color: #36A2EB;"></div>
+                                        <span class="fw-semibold">London</span>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">6</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle me-2" style="width: 8px; height: 8px; background-color: #FFCE56;"></div>
+                                        <span class="fw-semibold">Tokyo</span>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">4</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle me-2" style="width: 8px; height: 8px; background-color: #4BC0C0;"></div>
+                                        <span class="fw-semibold">Paris</span>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">3</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle me-2" style="width: 8px; height: 8px; background-color: #9966FF;"></div>
+                                        <span class="fw-semibold">Berlin</span>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <!-- Footer -->
+    <footer class="text-center py-4 mt-5 bg-light">
+        <div class="container">
+            <p class="text-muted mb-1">&copy; 2025 Task Dashboard. All rights reserved.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#" class="text-muted"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-muted"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../static/js/charts.js"></script>
+</body>
+</html>
