@@ -99,7 +99,7 @@ function loadMockData() {
         completed_tasks: dashboardData.tasks.filter(t => t.status === 'completed').length,
         pending_tasks: dashboardData.tasks.filter(t => t.status === 'pending').length,
         in_progress_tasks: dashboardData.tasks.filter(t => t.status === 'in_progress').length,
-        completion_rate: 50
+        completion_rate: 20
     };
     
     updateSummaryCards();
@@ -833,30 +833,6 @@ function handleError(error, context = 'Unknown') {
     showAlert(`Something went wrong in ${context}. Please try again.`, 'danger');
 }
 
-// Local storage helpers (for demo purposes - commented out for Django integration)
-/*
-function saveToLocalStorage() {
-    try {
-        localStorage.setItem('taskDashboardData', JSON.stringify(dashboardData));
-    } catch (error) {
-        console.warn('Could not save to localStorage:', error);
-    }
-}
-
-function loadFromLocalStorage() {
-    try {
-        const saved = localStorage.getItem('taskDashboardData');
-        if (saved) {
-            dashboardData = JSON.parse(saved);
-            return true;
-        }
-    } catch (error) {
-        console.warn('Could not load from localStorage:', error);
-    }
-    return false;
-}
-*/
-
 // Theme management
 function toggleTheme() {
     const body = document.body;
@@ -1015,3 +991,6 @@ window.TaskDashboard = {
 };
 
 console.log('Task Dashboard Charts.js loaded successfully! 🚀');
+
+
+

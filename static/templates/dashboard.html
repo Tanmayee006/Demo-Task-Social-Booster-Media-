@@ -137,7 +137,8 @@
 
               <!-- Task List -->
               <div id="task-list">
-                
+                <!-- Sample Tasks -->
+            
 
               </div>
             </div>
@@ -232,6 +233,16 @@
                   rows="3"
                 ></textarea>
               </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Due Date</label>
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    id="task-due-date"
+                  />
+                </div>
               </div>
             </form>
           </div>
@@ -255,125 +266,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-
-    <!-- <script>
-      // Simple JavaScript functions
-      function showAddTaskModal() {
-        const modal = new bootstrap.Modal(document.getElementById("taskModal"));
-        modal.show();
-      }
-
-      function saveTask() {
-        const title = document.getElementById("task-title").value;
-        const priority = document.getElementById("task-priority").value;
-        const description = document.getElementById("task-description").value;
-        const location = document.getElementById("task-location").value;
-
-        if (title) {
-          // 1. Update counters
-          let total = document.getElementById("total-tasks");
-          let pending = document.getElementById("pending-tasks");
-
-          total.innerText = parseInt(total.innerText) + 1;
-          pending.innerText = parseInt(pending.innerText) + 1;
-
-          // 2. Create new task card
-          const taskList = document.getElementById("task-list");
-          const newTask = document.createElement("div");
-          newTask.classList.add(
-            "task-item",
-            "card",
-            "mb-3",
-            `priority-${priority}`
-          );
-          newTask.innerHTML = `
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="flex-grow-1">
-                        <h6 class="card-title mb-1">${title}</h6>
-                        <p class="card-text text-muted small mb-2">${
-                          description || ""
-                        }</p>
-                        <div class="d-flex gap-2">
-                            <span class="badge ${
-                              priority === "high"
-                                ? "bg-danger"
-                                : priority === "medium"
-                                ? "bg-warning"
-                                : "bg-success"
-                            }">
-                                ${
-                                  priority === "high"
-                                    ? "🔴 High"
-                                    : priority === "medium"
-                                    ? "🟡 Medium"
-                                    : "🟢 Low"
-                                }
-                            </span>
-                            <span class="badge bg-warning">📋 Pending</span>
-                            ${
-                              location
-                                ? `<span class="badge bg-info"><i class="fas fa-map-marker-alt me-1"></i>${location}</span>`
-                                : ""
-                            }
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                            Actions
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-check me-2"></i>Mark Complete</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cloud me-2"></i>Check Weather</a></li>
-                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
-          taskList.prepend(newTask); // add on top
-
-          // 3. Close modal & reset form
-          const modal = bootstrap.Modal.getInstance(
-            document.getElementById("taskModal")
-          );
-          modal.hide();
-          document.getElementById("task-form").reset();
-        } else {
-          alert("Please enter a task title!");
-        }
-      }
-
-      function getWeather() {
-        const city = document.getElementById("weather-city").value;
-        if (city) {
-          // Simulate weather API call
-          document.getElementById("weather-info").innerHTML = `
-                        <div class="text-center">
-                            <h5>${city}</h5>
-                            <div class="temperature-display mb-2">${Math.floor(
-                              Math.random() * 30 + 5
-                            )}°C</div>
-                            <p class="mb-3">Sunny</p>
-                            <div class="row">
-                                <div class="col-6">
-                                    <small>Humidity</small><br>
-                                    <strong>${Math.floor(
-                                      Math.random() * 50 + 30
-                                    )}%</strong>
-                                </div>
-                                <div class="col-6">
-                                    <small>Wind</small><br>
-                                    <strong>${Math.floor(
-                                      Math.random() * 20 + 5
-                                    )} m/s</strong>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-        }
-      }
-    </script> -->
     <script>
   // ====== Update Counters ======
   function updateCounters() {
@@ -417,7 +309,6 @@
     const title = document.getElementById("task-title").value;
     const priority = document.getElementById("task-priority").value;
     const description = document.getElementById("task-description").value;
-    const location = document.getElementById("task-location").value;
 
     if (title) {
       const taskList = document.getElementById("task-list");
@@ -446,11 +337,6 @@
                   }
                 </span>
                 <span class="badge bg-warning">📋 Pending</span>
-                ${
-                  location
-                    ? `<span class="badge bg-info"><i class="fas fa-map-marker-alt me-1"></i>${location}</span>`
-                    : ""
-                }
               </div>
             </div>
             <div class="dropdown">
@@ -506,6 +392,5 @@
   });
 </script>
 
-    </body>
-
+  </body>
 </html>

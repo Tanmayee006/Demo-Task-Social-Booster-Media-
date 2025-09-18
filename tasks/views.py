@@ -6,6 +6,7 @@ from django.db.models import Q
 from .models import Task
 from .serializers import TaskSerializer, TaskCreateSerializer
 
+
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer

@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/tasks/', include('tasks.urls')),
     path('api/weather/', include('weather.urls')),
-    path('api/reports/', include('reports.urls')),
+    path('reports/', include('reports.urls')),
 
     # Root URL → dashboard
     path('', TemplateView.as_view(template_name='dashboard.html'), name='home'),
